@@ -53,7 +53,7 @@ if select_page == "Home":
             """)
 
 
-# ------------------------------ Explore Data Page ----------------------#
+# ------------------------------ Application Page ----------------------#
 elif select_page == "Application":
     st.title("Industrial Copper Modeling Application")
 
