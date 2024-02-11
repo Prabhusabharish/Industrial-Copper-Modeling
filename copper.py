@@ -79,14 +79,9 @@ def predict_selling_price(ctry,sts,itmtp,aplcn,wth,prdrf,qtlg,cstlg,
     return ac_y_pred
 
 
-# st.set_page_config(layout= "wide")
+
 
 st.title(":blue[**INDUSTRIAL COPPER MODELING**]")
-
-# with st.sidebar:
-#     option = option_menu('Vignesh', options=["PREDICT SELLING PRICE", "PREDICT STATUS"])
-
-# if option == "PREDICT STATUS":
 if SELECT == "Predict Selling Price":
 
     st.header("PREDICT STATUS (Won / Lose)")
