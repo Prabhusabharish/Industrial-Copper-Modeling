@@ -1,76 +1,167 @@
-import streamlit as st
-import pandas as pd
+import pickle
 import numpy as np
-import seaborn as sns
-from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt
+import pandas as pd
 from PIL import Image
-
+import streamlit as st
+from streamlit_option_menu import option_menu
 
 
 # - - - - - - - - - - - - - - -set st addbar page - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 icon = Image.open("C:/Users/prabh/Downloads/Datascience/Project/Copper/1.png")
-st.set_page_config(page_title= "BizCardX: Extracting Business Card Data with OCR",
+st.set_page_config(page_title= "Copper",
                    page_icon= icon,
                    layout= "wide",
                    initial_sidebar_state= "expanded")
 
-# - - - - - - - - - - - - - - -set bg image - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-def setting_bg():
-    st.markdown(f""" <style>.stApp {{
-                        background: url("https://cutewallpaper.org/28/copper-hd-wallpaper/16624879.jpg");
-                        background-size: cover}}
-                     </style>""",unsafe_allow_html=True) 
-setting_bg()
 
 
+# # - - - - - - - - - - - - - - -Option menu - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-# - - - - - - - - - - - - - - -sidebar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+SELECT = option_menu(
+    menu_title=None,
+    options=["Predict Selling Price", "Predict Status"],
+    default_index=0,
+    orientation="horizontal",
+    styles={"container": {"padding": "0!important", "background-color": "white", "size": "cover", "width": "100"},
+            "icon": {"color": "black", "font-size": "20px"},
 
-st.sidebar.title("Navigation")
-select_page = st.sidebar.radio("", ["Home", "Application"])
+            "nav-link": {"font-size": "20px", "text-align": "center", "margin": "-2px", "--hover-color": "#6F36AD"},
+            "nav-link-selected": {"background-color": "#6F36AD"}})
 
-# - - - - - - - - - - - - - - -Home page - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-# Home page creation
-if select_page == "Home":
-    st.title("Home Page")
+# Functions
+def predict_status(ctry,itmtp,aplcn,wth,prdrf,qtlg,cstlg,tknslg,slgplg,itmdt,itmmn,itmyr,deldtdy,deldtmn,deldtyr):
 
-    st.markdown("""
-            Technologies Used:
-            - Python
-            - Pandas
-            - Numpy
-            - Seaborn
-            - sklearn
-            - Pickle
-            - Regression or Classification
-            - Streamlit
-            
-            Features:
-            - xxx
-            """)
+    #change the datatypes "string" to "int"
+    itdd= int(itmdt)
+    itdm= int(itmmn)
+    itdy= int(itmyr)
+
+    dydd= int(deldtdy)
+    dydm= int(deldtmn)
+    dydy= int(deldtyr)
+    #modelfile of the classification
+    with open("C:/Users/prabh/Downloads/Datascience/Project/Copper/Classification_model.pkl","rb") as f:
+        model_class=pickle.load(f)
+
+    user_data= np.array([[ctry,itmtp,aplcn,wth,prdrf,qtlg,cstlg,tknslg,
+                       slgplg,itdd,itdm,itdy,dydd,dydm,dydy]])
+    
+    y_pred= model_class.predict(user_data)
+
+    if y_pred == 1:
+        return 1
+    else:
+        return 0
+
+def predict_selling_price(ctry,sts,itmtp,aplcn,wth,prdrf,qtlg,cstlg,
+                   tknslg,itmdt,itmmn,itmyr,deldtdy,deldtmn,deldtyr):
+
+    #change the datatypes "string" to "int"
+    itdd= int(itmdt)
+    itdm= int(itmmn)
+    itdy= int(itmyr)
+
+    dydd= int(deldtdy)
+    dydm= int(deldtmn)
+    dydy= int(deldtyr)
+    #modelfile of the classification
+    with open("C:/Users/prabh/Downloads/Datascience/Project/Copper/Regression_Model.pkl","rb") as f:
+        model_regg=pickle.load(f)
+
+    user_data= np.array([[ctry,sts,itmtp,aplcn,wth,prdrf,qtlg,cstlg,tknslg,
+                       itdd,itdm,itdy,dydd,dydm,dydy]])
+    
+    y_pred= model_regg.predict(user_data)
+
+    ac_y_pred= np.exp(y_pred[0])
+
+    return ac_y_pred
 
 
-# ------------------------------ Application Page ----------------------#
-elif select_page == "Application":
-    st.title("Industrial Copper Modeling Application")
+# st.set_page_config(layout= "wide")
 
+st.title(":blue[**INDUSTRIAL COPPER MODELING**]")
 
+# with st.sidebar:
+#     option = option_menu('Vignesh', options=["PREDICT SELLING PRICE", "PREDICT STATUS"])
 
+# if option == "PREDICT STATUS":
+if SELECT == "Predict Selling Price":
 
-    # Dealing with data in wrong format
-    copper[ "item_date"] = pd.to_datetime(copper["item_date"], format="%Y%m%d", errors = "coerce").dt.date
-    copper[ "quantity tons"] = pd.to_numeric(copper["quantity tons"], errors = "coerce")
-    copper["customer"] = pd.to_numeric(copper["customer"], errors = "coerce")
-    copper["country"] = pd.to_numeric(copper["country"], errors = "coerce")
-    copper["application"] = pd.to_numeric(copper["application"], errors = "coerce")
-    copper["thickness"] = pd.to_numeric(copper["thickness"], errors = "coerce")
-    copper["width"] = pd.to_numeric(copper["width"], errors = "coerce")
-    copper["material_ref"] = copper["material_ref"].str. lstrip("0")
-    copper[ "product_ref"] = pd.to_numeric (copper [ "product_ref"], errors = "coerce")
-    copper["delivery date"] = pd.to_datetime(copper["delivery date"], format = "%Y%m%d", errors="coerce").dt.date
-    copper["selling_price"] = pd.to_numeric (copper["selling_price"], errors = "coerce")
+    st.header("PREDICT STATUS (Won / Lose)")
+    st.write(" ")
 
+    col1,col2= st.columns(2)
 
+    with col1:
+        country= st.number_input(label="**Enter the Value for COUNTRY**/ Min:25.0, Max:113.0")
+        item_type= st.number_input(label="**Enter the Value for ITEM TYPE**/ Min:0.0, Max:6.0")
+        application= st.number_input(label="**Enter the Value for APPLICATION**/ Min:2.0, Max:87.5")
+        width= st.number_input(label="**Enter the Value for WIDTH**/ Min:700.0, Max:1980.0")
+        product_ref= st.number_input(label="**Enter the Value for PRODUCT_REF**/ Min:611728, Max:1722207579")
+        quantity_tons_log= st.number_input(label="**Enter the Value for QUANTITY_TONS (Log Value)**/ Min:-0.322, Max:6.924",format="%0.15f")
+        customer_log= st.number_input(label="**Enter the Value for CUSTOMER (Log Value)**/ Min:17.21910, Max:17.23015",format="%0.15f")
+        thickness_log= st.number_input(label="**Enter the Value for THICKNESS (Log Value)**/ Min:-1.71479, Max:3.28154",format="%0.15f")
+    
+    with col2:
+        selling_price_log= st.number_input(label="**Enter the Value for SELLING PRICE (Log Value)**/ Min:5.97503, Max:7.39036",format="%0.15f")
+        item_date_day= st.selectbox("**Select the Day for ITEM DATE**",("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"))
+        item_date_month= st.selectbox("**Select the Month for ITEM DATE**",("1","2","3","4","5","6","7","8","9","10","11","12"))
+        item_date_year= st.selectbox("**Select the Year for ITEM DATE**",("2020","2021"))
+        delivery_date_day= st.selectbox("**Select the Day for DELIVERY DATE**",("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"))
+        delivery_date_month= st.selectbox("**Select the Month for DELIVERY DATE**",("1","2","3","4","5","6","7","8","9","10","11","12"))
+        delivery_date_year= st.selectbox("**Select the Year for DELIVERY DATE**",("2020","2021","2022"))
+        
+
+    button= st.button(":violet[***PREDICT THE STATUS***]",use_container_width=True)
+
+    if button:
+        status= predict_status(country,item_type,application,width,product_ref,quantity_tons_log,
+                               customer_log,thickness_log,selling_price_log,item_date_day,
+                               item_date_month,item_date_year,delivery_date_day,delivery_date_month,
+                               delivery_date_year)
+        
+        if status == 1:
+            st.write("## :green[**The Status is WON**]")
+        else:
+            st.write("## :red[**The Status is LOSE**]")
+
+if SELECT == "Predict Status":
+
+    st.header("**PREDICT SELLING PRICE**")
+    st.write(" ")
+
+    col1,col2= st.columns(2)
+
+    with col1:
+        country= st.number_input(label="**Enter the Value for COUNTRY**/ Min:25.0, Max:113.0")
+        status= st.number_input(label="**Enter the Value for STATUS**/ Min:0.0, Max:8.0")
+        item_type= st.number_input(label="**Enter the Value for ITEM TYPE**/ Min:0.0, Max:6.0")
+        application= st.number_input(label="**Enter the Value for APPLICATION**/ Min:2.0, Max:87.5")
+        width= st.number_input(label="**Enter the Value for WIDTH**/ Min:700.0, Max:1980.0")
+        product_ref= st.number_input(label="**Enter the Value for PRODUCT_REF**/ Min:611728, Max:1722207579")
+        quantity_tons_log= st.number_input(label="**Enter the Value for QUANTITY_TONS (Log Value)**/ Min:-0.3223343801166147, Max:6.924734324081348",format="%0.15f")
+        customer_log= st.number_input(label="**Enter the Value for CUSTOMER (Log Value)**/ Min:17.21910565821408, Max:17.230155364880137",format="%0.15f")
+        
+    
+    with col2:
+        thickness_log= st.number_input(label="**Enter the Value for THICKNESS (Log Value)**/ Min:-1.7147984280919266, Max:3.281543137578373",format="%0.15f")
+        item_date_day= st.selectbox("**Select the Day for ITEM DATE**",("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"))
+        item_date_month= st.selectbox("**Select the Month for ITEM DATE**",("1","2","3","4","5","6","7","8","9","10","11","12"))
+        item_date_year= st.selectbox("**Select the Year for ITEM DATE**",("2020","2021"))
+        delivery_date_day= st.selectbox("**Select the Day for DELIVERY DATE**",("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"))
+        delivery_date_month= st.selectbox("**Select the Month for DELIVERY DATE**",("1","2","3","4","5","6","7","8","9","10","11","12"))
+        delivery_date_year= st.selectbox("**Select the Year for DELIVERY DATE**",("2020","2021","2022"))
+        
+
+    button= st.button(":violet[***PREDICT THE SELLING PRICE***]",use_container_width=True)
+
+    if button:
+        price= predict_selling_price(country,status,item_type,application,width,product_ref,quantity_tons_log,
+                               customer_log,thickness_log,item_date_day,
+                               item_date_month,item_date_year,delivery_date_day,delivery_date_month,
+                               delivery_date_year)
+        
+        
+        st.write("## :green[**The Selling Price is :**]",price)
