@@ -59,18 +59,30 @@ Additionally, a Streamlit web application is created for interactive predictions
   ✔	Inputting values for each column to get Selling_Price predictions or lead Status (Won/Lost).
 
 **Project Learning Outcomes**
-1. Proficiency in Python programming and data analysis libraries.
-2. Experience in data preprocessing techniques.
-3. Understanding and visualizing data through EDA techniques.
-4. Building and optimizing machine learning models for classification and regression.
-5. Creating a web application using Streamlit.
-6. Gaining domain-specific knowledge in the manufacturing industry.
-Project Evaluation Metrics
-✔	Code should be modular, maintainable, and portable.
-✔	Codebase should be maintained on GitHub (public repository).
-✔	Include a proper README file explaining project development.
-✔	Follow Python coding standards (PEP 8).
 
+1. Proficiency in Python programming and data analysis libraries.
+
+2. Experience in data preprocessing techniques.
+
+3. Understanding and visualizing data through EDA techniques.
+
+4. Building and optimizing machine learning models for classification and regression.
+
+5. Creating a web application using Streamlit.
+
+6. Gaining domain-specific knowledge in the manufacturing industry.
+
+**Project Evaluation Metrics**
+
+  ✔	Code should be modular, maintainable, and portable.
+
+  ✔	Codebase should be maintained on GitHub (public repository).
+
+  ✔	Include a proper README file explaining project development.
+
+  ✔	Follow Python coding standards (PEP 8).
+
+  
 **Contact**
 
 For any inquiries or suggestions, feel free to contact [Prabhusabharish] at [prabhusabharish78il@gmail.com].
