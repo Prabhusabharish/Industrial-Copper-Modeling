@@ -39,6 +39,7 @@ Additionally, a Streamlit web application is created for interactive predictions
 **Feature Engineering**
 
   ✔	Creating new features if applicable.
+  
   ✔	Dropping highly correlated columns.
 
 **Model Building and Evaluation**
@@ -71,8 +72,5 @@ Project Evaluation Metrics
 ✔	Follow Python coding standards (PEP 8).
 
 **Contact**
+
 For any inquiries or suggestions, feel free to contact [Prabhusabharish] at [prabhusabharish78il@gmail.com].
-
-```
-
-Remember to replace `[Your Name]`, `[ Prabhusabharish]`, `[ prabhusabharish78il@gmail.com]`, and other placeholders with your actual information. You can also add more details or sections as needed for your specific project.
