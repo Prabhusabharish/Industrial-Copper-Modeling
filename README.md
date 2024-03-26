@@ -1,4 +1,4 @@
-**INDUSTRIAL COPPER MODELING PROJECT**
+**INDUSTRIAL COPPER MODELING**
 
 **Project Overview**
 This project involves building machine learning models for the industrial copper industry. The goal is to address challenges related to sales and pricing data, including skewness, noisy data, and lead classification. Two main models are developed:
